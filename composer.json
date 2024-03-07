@@ -1,0 +1,29 @@
+{
+    "name": "buttress/phpx",
+    "description": "PHP DOM but fluent",
+    "autoload": {
+        "psr-4": {
+            "Buttress\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Korvin Szanto",
+            "email": "me@kor.vin"
+        }
+    ],
+    "minimum-stability": "stable",
+    "license": "MIT",
+    "require": {
+        "php": ">8",
+        "ext-dom": "*"
+    },
+    "require-dev": {
+        "pestphp/pest": "^2"
+    },
+    "config": {
+        "allow-plugins": {
+            "pestphp/pest-plugin": true
+        }
+    }
+}
