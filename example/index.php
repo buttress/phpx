@@ -35,9 +35,9 @@ $x->out($x->html(c: [
 
                     // Supports conditionals
                     ...$x->if(
-                        date('A') === 'am',
-                        fn() => $x->li(c: 'Great for mornings'),
-                        fn() => $x->li(c: 'Great for afternoons'),
+                        date('A') === 'AM',
+                        fn() => $x->li(c: 'Great for writing code in the morning'),
+                        fn() => $x->li(c: 'Great for writing code in the afternoon'),
                     ),
                 ]),
             ])),

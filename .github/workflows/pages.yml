@@ -1,0 +1,54 @@
+name: Build storybook
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup PHP with specific version of PECL extension
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+      - run: composer install
+      - run: php example/index.php > example/index.html
+      - run: mkdir _site
+      - run: mv example/*.html _site
+      - run: mv example/*.css _site
+      - name: Setup Pages
+        uses: actions/configure-pages@v3
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+
+  deploy:
+    needs: build
+
+    permissions:
+      pages: write
+      id-token: write
+
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    # Specify runner + deployment step
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
