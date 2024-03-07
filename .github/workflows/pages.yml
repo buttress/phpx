@@ -27,6 +27,7 @@ jobs:
           php-version: '8.3'
       - run: composer install
       - run: php example/index.php > example/index.html
+      - run: php example/xss_test.php > example/xss_test.html
       - run: mkdir _site
       - run: mv example/*.html _site
       - run: mv example/*.css _site

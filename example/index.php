@@ -43,7 +43,7 @@ $x->out($x->html(c: [
             ])),
 
             // Source code half
-            $x->div(class: 'w-1/2 text-sm bg-gray-200 min-h-screen w-50 flex flex-column items-center font-mono', c: [
+            $x->div(class: 'w-1/2 text-sm bg-gray-200 min-h-screen w-50 flex items-center font-mono', c: [
 
                 $x->div(class: 'flex mr-2 overflow-scroll h-screen', c: [
                     // Convenient fluent variable capture method
