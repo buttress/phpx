@@ -27,25 +27,27 @@ expect()->extend('toBeOne', function () {
     return $this->toBe(1);
 });
 
-expect()->extend('toTakeLessThan', function (float $ms, int $iterations = 1000) {
-    $ms = max(0.0001, $ms);
-    $took = 0;
+expect()->extend('toTakeLessThan', function (float $seconds, int $iterations = 1) {
+    $ms = max(0.0001, $seconds);
     $i = $iterations;
+    $total = 0;
 
     while ($i-- > 0) {
         ob_start();
-        $start = microtime(true);
+        $took = -hrtime(true);
         ($this->value)();
-        $took += microtime(true) - $start;
+        $took += hrtime(true);
+        $total += $took / 1e6;
         ob_end_clean();
     }
 
-    $avg = $took / $iterations;
+    $avg = $total / $iterations;
+
     echo sprintf("Took <info>%s</> on average.", format_ms($avg));
     return expect($avg < $ms)->toBeTrue(sprintf(
         'Callable required more than %s. Took %f%% more time (%s)',
         format_ms($ms),
-        ($avg / $ms) * 100,
+        (($avg / $ms) * 100) - 100,
         format_ms($avg)
     ));
 });
@@ -53,14 +55,14 @@ expect()->extend('toTakeLessThan', function (float $ms, int $iterations = 1000) 
 function format_ms(float $ms)
 {
     $unit = 'ms';
-    if ($ms < 1) {
-        $ms *= 100;
-        $unit = 'ns';
-    }
-    if ($ms < 1) {
-        $ms *= 100;
+    if ($ms > 1000) {
+        $unit = 's';
+        $ms /= 1000;
+    } elseif ($ms < 1) {
         $unit = 'μs';
+        $ms *= 1000;
     }
+
     return round($ms, 3) . $unit;
 }
 

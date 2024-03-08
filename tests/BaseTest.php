@@ -90,6 +90,7 @@ it('outputs', function () {
 });
 
 it('performs well', function () {
-    expect(fn() => require __DIR__ . '/../example/index.php')
-        ->toTakeLessThan(0.01);
+    $x = new \Buttress\PHPX();
+    expect(fn() => $x->render($x->div(class: 'test', c: 'test')))
+        ->toTakeLessThan(0.05); // 50μs
 });
