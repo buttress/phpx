@@ -95,7 +95,6 @@ $result = $x->render(
     ...$x->foreach($features, fn(string $feature) => $x->li(c: ucfirst($feature)))
 );
 
-
 /**
  * $x->with : Capture a variable
  */

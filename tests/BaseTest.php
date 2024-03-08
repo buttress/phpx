@@ -102,7 +102,7 @@ $performanceTest = fn(string $type, string $raw) => function () use ($type, $raw
     ])), 1000);
 
     return [
-        $type . ': '. format_us($timing) => $timing,
+        $type . ': ' . format_us($timing) => $timing,
     ];
 };
 
