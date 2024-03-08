@@ -23,10 +23,46 @@
 | to assert different things. Of course, you may extend the Expectation API at any time.
 |
 */
-
 expect()->extend('toBeOne', function () {
     return $this->toBe(1);
 });
+
+expect()->extend('toTakeLessThan', function (float $ms, int $iterations = 1000) {
+    $ms = max(0.0001, $ms);
+    $took = 0;
+    $i = $iterations;
+
+    while ($i-- > 0) {
+        ob_start();
+        $start = microtime(true);
+        ($this->value)();
+        $took += microtime(true) - $start;
+        ob_end_clean();
+    }
+
+    $avg = $took / $iterations;
+    echo sprintf("Took <info>%s</> on average.", format_ms($avg));
+    return expect($avg < $ms)->toBeTrue(sprintf(
+        'Callable required more than %s. Took %f%% more time (%s)',
+        format_ms($ms),
+        ($avg / $ms) * 100,
+        format_ms($avg)
+    ));
+});
+
+function format_ms(float $ms)
+{
+    $unit = 'ms';
+    if ($ms < 1) {
+        $ms *= 100;
+        $unit = 'ns';
+    }
+    if ($ms < 1) {
+        $ms *= 100;
+        $unit = 'μs';
+    }
+    return round($ms, 3) . $unit;
+}
 
 /*
 |--------------------------------------------------------------------------

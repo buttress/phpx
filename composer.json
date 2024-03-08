@@ -19,7 +19,8 @@
         "ext-dom": "*"
     },
     "require-dev": {
-        "pestphp/pest": "^2"
+        "pestphp/pest": "^2",
+        "laravel/pint": "^1.14"
     },
     "config": {
         "allow-plugins": {

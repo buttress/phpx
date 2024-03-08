@@ -1,0 +1,20 @@
+name: Build storybook
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+      - run: composer install
+      - run: ./vendor/bin/pint --preset per --test
+      - run: XDEBUG_MODE=coverage ./vendor/bin/pest --coverage

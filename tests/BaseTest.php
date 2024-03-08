@@ -9,13 +9,15 @@ it('renders elements', function () {
 it('handles foreach loops', function () {
     $x = new \Buttress\PHPX();
 
-    expect($x->render(
-        $x->ul(c: [
-            ...$x->foreach(
-                range(1, 3),
-                fn($i) => $x->li(c: "Item {$i}")
-            )
-        ]))
+    expect(
+        $x->render(
+            $x->ul(c: [
+                ...$x->foreach(
+                    range(1, 3),
+                    fn($i) => $x->li(c: "Item {$i}")
+                )
+            ])
+        )
     )->toBe('<ul><li>Item 1</li><li>Item 2</li><li>Item 3</li></ul>');
 });
 
@@ -85,4 +87,9 @@ it('outputs', function () {
     ob_start();
     $x->out($x->div());
     expect(ob_get_clean())->toBe('<div></div>');
+});
+
+it('performs well', function () {
+    expect(fn() => require __DIR__ . '/../example/index.php')
+        ->toTakeLessThan(0.01);
 });

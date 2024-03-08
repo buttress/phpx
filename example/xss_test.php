@@ -1,4 +1,5 @@
 <?php
+
 require_once __DIR__ . '/../vendor/autoload.php';
 
 
@@ -40,7 +41,7 @@ $x->out($x->html(c: [
                     $x->br(),
                     'the template using PHPX:',
                     $x->br(),
-                    $x->code(c: '$x->div(c: $xss)')
+                    $x->code(alt:'', c: '$x->div(c: $xss)')
                 ]),
             ])),
 

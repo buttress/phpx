@@ -1,4 +1,5 @@
 <?php
+
 require_once __DIR__ . '/../vendor/autoload.php';
 
 $features = [
@@ -26,7 +27,7 @@ $x->out($x->html(c: [
     $x->body(c: [
         $x->div(class: 'flex', c: [
             // Introduction half
-            $x->div(class: 'w-1/2 prose max-w-none flex flex-column items-center justify-center', c: $x->div(c: [
+            $x->div(class: 'lg:w-1/2 w-full prose max-w-none flex flex-column items-center justify-center', c: $x->div(c: [
                 $x->h1(class: 'mb-0 text-3xl', c: 'PHPX'),
                 $x->sup(class: 'mb-2', c: $x->em(c: 'PHP DOM but fluent')),
                 $x->ul(class: 'list-disc', c: [
@@ -43,14 +44,14 @@ $x->out($x->html(c: [
             ])),
 
             // Source code half
-            $x->div(class: 'w-1/2 text-sm bg-gray-200 min-h-screen w-50 flex items-center font-mono', c: [
+            $x->div(class: 'lg:w-1/2 w-full text-sm bg-gray-200 min-h-screen w-50 flex items-center font-mono', c: [
 
                 $x->div(class: 'flex mr-2 overflow-scroll h-screen', c: [
                     // Convenient fluent variable capture method
                     ...$x->with(file_get_contents(__FILE__), fn(string $contents) => [
                         $x->div(class: 'text-gray-400 mr-2 text-right px-1 h-screen', c: $x->foreach(
                             range(1, count(explode("\n", $contents))),
-                            fn ($line) => $x->div(c: "{$line}")
+                            fn($line) => $x->div(c: "{$line}")
                         )),
                         $x->raw(str_replace(
                             '$x',
