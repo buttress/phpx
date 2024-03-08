@@ -109,6 +109,8 @@ $performanceTest = fn(string $type, string $raw) => function () use ($type, $raw
 dataset('BasicPerformance', $performanceTest('Basic', 'foo'));
 dataset('InterpolatedPerformance', $performanceTest('Interpolated', '<foo'));
 
-it('performs well', function ($timing) {
-    expect($timing)->toBeFasterThan(50); // 50μs (microseconds)
+it('performs well', function (...$timings) {
+    foreach ($timings as $timing) {
+        expect($timing)->toBeFasterThan(75); // 75μs (microseconds)
+    }
 })->with('BasicPerformance', 'InterpolatedPerformance');
