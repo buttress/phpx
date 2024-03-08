@@ -26,5 +26,14 @@
         "allow-plugins": {
             "pestphp/pest-plugin": true
         }
+    },
+    "scripts": {
+        "lint": "pint --preset per",
+        "test:unit": "pest",
+        "test:lint": "@lint --test",
+        "test": [
+            "@test:unit",
+            "@test:lint"
+        ]
     }
 }

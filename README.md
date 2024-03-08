@@ -119,6 +119,12 @@ Contributions to PHPX are always welcome! Feel free to fork the repository and s
 
 PHPX is released under the MIT License.
 
+## Githooks
+To add our githooks and run tests before commit:
+```bash
+git config --local core.hooksPath .githooks
+```
+
 ## Support
 
 If you encounter any problems or have any questions, please open an issue on GitHub.
