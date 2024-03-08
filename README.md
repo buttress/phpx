@@ -1,17 +1,9 @@
-```mupad
--
+<p align="center">
+    <code lang="html">&lt;PHPX/&gt;</code><br><br>
+    A fluent DOMDocument wrapper that makes it easy to write safe valid HTML in plain PHP.
+</p>
 
-    ________  _______   ________  ________
-   ╱        ╲╱    ╱  ╲╲╱        ╲╱    ╱   ╲
-  ╱         ╱        ╱╱         ╱_       _╱
- ╱╱      __╱         ╱╱      __╱         ╱
- ╲╲_____╱  ╲___╱____╱╲╲_____╱  ╲___╱___╱╱
-
-
--
-```
-
-PHPX is a fluent DOMDocument wrapper that makes it easy to write safe valid HTML in plain PHP.
+---
 
 ```php
 $x = new Buttress\PHPX();
@@ -29,7 +21,7 @@ $x->out(
 );
 ```
 
-outputs
+becomes
 
 ```html
 <main class="content">

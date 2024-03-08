@@ -207,85 +207,6 @@ use DOMNode;
  */
 class PHPX
 {
-    protected const CORRECT = [
-        'use_credentials' => 'use-credentials',
-        'moz_opaque' => 'moz-opaque',
-        'accept_charset' => 'accept-charset',
-        'no_referrer' => 'no-referrer',
-        'no_referrer_when_downgrade' => 'no-referrer-when-downgrade',
-        'origin_when_cross_origin' => 'origin-when-cross-origin',
-        'same_origin' => 'same-origin',
-        'strict_origin' => 'strict-origin',
-        'strict_origin_when_cross_origin' => 'strict-origin-when-cross-origin',
-        'unsafe_url' => 'unsafe-url',
-        'allow_downloads' => 'allow-downloads',
-        'allow_downloads_without_user_activation' => 'allow-downloads-without-user-activation',
-        'allow_forms' => 'allow-forms',
-        'allow_modals' => 'allow-modals',
-        'allow_orientation_lock' => 'allow-orientation-lock',
-        'allow_pointer_lock' => 'allow-pointer-lock',
-        'allow_popups' => 'allow-popups',
-        'allow_popups_to_escape_sandbox' => 'allow-popups-to-escape-sandbox',
-        'allow_presentation' => 'allow-presentation',
-        'allow_same_origin' => 'allow-same-origin',
-        'allow_scripts' => 'allow-scripts',
-        'allow_storage_access_by_user_activation' => 'allow-storage-access-by-user-activation',
-        'allow_top_navigation' => 'allow-top-navigation',
-        'allow_top_navigation_by_user_activation' => 'allow-top-navigation-by-user-activation',
-        'allow_top_navigation_to_custom_protocols' => 'allow-top-navigation-to-custom-protocols',
-        'http_equiv' => 'http-equiv',
-        'stop_color' => 'stop-color',
-        'stop_opacity' => 'stop-opacity',
-        'alignment_baseline' => 'alignment-baseline',
-        'baseline_shift' => 'baseline-shift',
-        'clip_path' => 'clip-path',
-        'clip_rule' => 'clip-rule',
-        'color_interpolation' => 'color-interpolation',
-        'color_interpolation_filters' => 'color-interpolation-filters',
-        'dominant_baseline' => 'dominant-baseline',
-        'fill_opacity' => 'fill-opacity',
-        'fill_rule' => 'fill-rule',
-        'flood_color' => 'flood-color',
-        'flood_opacity' => 'flood-opacity',
-        'font_family' => 'font-family',
-        'font_size' => 'font-size',
-        'font_size_adjust' => 'font-size-adjust',
-        'font_stretch' => 'font-stretch',
-        'font_style' => 'font-style',
-        'font_variant' => 'font-variant',
-        'font_weight' => 'font-weight',
-        'image_rendering' => 'image-rendering',
-        'letter_spacing' => 'letter-spacing',
-        'lighting_color' => 'lighting-color',
-        'marker_end' => 'marker-end',
-        'marker_mid' => 'marker-mid',
-        'marker_start' => 'marker-start',
-        'overline_position' => 'overline-position',
-        'overline_thickness' => 'overline-thickness',
-        'paint_order' => 'paint-order',
-        'pointer_events' => 'pointer-events',
-        'shape_rendering' => 'shape-rendering',
-        'strikethrough_position' => 'strikethrough-position',
-        'strikethrough_thickness' => 'strikethrough-thickness',
-        'stroke_dasharray' => 'stroke-dasharray',
-        'stroke_dashoffset' => 'stroke-dashoffset',
-        'stroke_linecap' => 'stroke-linecap',
-        'stroke_linejoin' => 'stroke-linejoin',
-        'stroke_miterlimit' => 'stroke-miterlimit',
-        'stroke_opacity' => 'stroke-opacity',
-        'stroke_width' => 'stroke-width',
-        'text_anchor' => 'text-anchor',
-        'text_decoration' => 'text-decoration',
-        'text_rendering' => 'text-rendering',
-        'transform_origin' => 'transform-origin',
-        'underline_position' => 'underline-position',
-        'underline_thickness' => 'underline-thickness',
-        'unicode_bidi' => 'unicode-bidi',
-        'vector_effect' => 'vector-effect',
-        'word_spacing' => 'word-spacing',
-        'writing_mode' => 'writing-mode',
-    ];
-
     protected array $replace = [];
 
     protected readonly DOMImplementation $implementation;
@@ -301,56 +222,43 @@ class PHPX
 
     public function __call(string $method, array $args): DOMElement
     {
+        $element = $this->dom->createElement($method);
+
+        // Handle children
         $c = $args['c'] ?? [];
-        $data = $args['data'] ?? [];
-        $aria = $args['aria'] ?? [];
+        if (!is_array($c)) {
+            $c = [$c];
+        }
+        $element->append(...$c);
 
         $attributes = $args['attributes'] ?? [];
-        unset($args['c'], $args['data'], $args['aria'], $args['attributes']);
 
-        foreach ($args as $key => $value) {
-            $attributes[$key] = $value;
+        foreach (['data', 'aria'] as $type) {
+            foreach ($args[$type] ?? [] as $key => $val) {
+                $attributes[$type . '-' . (string) $key] = $val;
+            }
         }
 
-        return $this->element($method, $attributes, $data, $aria, $c);
+        unset($args['c'], $args['data'], $args['aria'], $args['attributes']);
+
+        // Merge attributes array into args array
+        foreach ($attributes as $key => $value) {
+            $args[$key] = $value;
+        }
+
+        foreach ($args as $key => $val) {
+            $element->setAttribute($key, (string) $val);
+        }
+
+        return $element;
     }
 
     public function element(
         string $tag,
         array $attributes = [],
-        array $data = [],
-        array $aria = [],
         array|DOMNode|string $c = [],
     ): DOMElement {
-        if (!is_array($c)) {
-            $c = [$c];
-        }
-
-        foreach (self::CORRECT as $from => $to) {
-            if (isset($attributes[$from])) {
-                $attributes[$to] = $attributes[$from];
-                unset($attributes[$from]);
-            }
-        }
-
-        foreach ($data as $key => $value) {
-            $attributes['data-' . $key] = $value;
-        }
-        foreach ($aria as $key => $value) {
-            $attributes['aria-' . $key] = $value;
-        }
-        $element = $this->dom->createElement($tag);
-        foreach ($attributes as $key => $value) {
-            if (is_bool($value)) {
-                $value = $value ? 'true' : 'false';
-            }
-            if ($value !== null) {
-                $element->setAttribute($key, $value);
-            }
-        }
-
-        $element->append(...$c);
-        return $element;
+        return $this->__call($tag, ['attributes' => $attributes, 'c' => $c]);
     }
 
     public function raw(string $value): DOMDocumentFragment
@@ -361,8 +269,15 @@ class PHPX
         if ($fragment === false) {
             throw new \RuntimeException('Unable to create DOM Fragment.');
         }
-        $fragment->textContent = $key;
-        $this->replace[$key] = $value;
+
+        // Test sanitizing
+        $sanitized = htmlspecialchars($value, ENT_QUOTES | ENT_HTML5);
+        if ($sanitized === $value) {
+            $fragment->textContent = $value;
+        } else {
+            $fragment->textContent = $key;
+            $this->replace[$key] = $value;
+        }
 
         return $fragment;
     }
@@ -376,8 +291,8 @@ class PHPX
      * @template T of mixed
      * @template TKey of array-key
      *
-     * @param  iterable<TKey, T>  $list
-     * @param  (callable(T, TKey): list<DOMNode>)  $do
+     * @param iterable<TKey, T> $list
+     * @param (callable(T, TKey): list<DOMNode>) $do
      * @return list<DOMNode>
      */
     public function foreach(iterable $list, callable $do): array
@@ -391,8 +306,8 @@ class PHPX
     }
 
     /**
-     * @param  callable(): list<DOMNode>  $do
-     * @param  null|callable(): list<DOMNode>  $else
+     * @param callable(): list<DOMNode> $do
+     * @param null|callable(): list<DOMNode> $else
      * @return list<DOMNode>
      */
     public function if(bool $condition, callable $do, ?callable $else = null): array
@@ -412,11 +327,11 @@ class PHPX
     }
 
     /**
-     * @template T
-     * @template TReturn
+     * @template T of mixed
+     * @template TReturn of list<DOMNode>|string|DOMNode
      *
-     * @param  T  $value
-     * @param  callable(T): TReturn  $callable
+     * @param T $value
+     * @param callable(T): TReturn $callable
      * @return TReturn
      */
     public function with(mixed $value, callable $callable)

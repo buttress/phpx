@@ -27,44 +27,12 @@ expect()->extend('toBeOne', function () {
     return $this->toBe(1);
 });
 
-expect()->extend('toTakeLessThan', function (float $seconds, int $iterations = 1) {
-    $ms = max(0.0001, $seconds);
-    $i = $iterations;
-    $total = 0;
-
-    while ($i-- > 0) {
-        ob_start();
-        $took = -hrtime(true);
-        ($this->value)();
-        $took += hrtime(true);
-        $total += $took / 1e6;
-        ob_end_clean();
-    }
-
-    $avg = $total / $iterations;
-
-    echo sprintf("Took <info>%s</> on average.", format_ms($avg));
-    return expect($avg < $ms)->toBeTrue(sprintf(
-        'Callable required more than %s. Took %f%% more time (%s)',
-        format_ms($ms),
-        (($avg / $ms) * 100) - 100,
-        format_ms($avg)
-    ));
+expect()->extend('toBeFasterThan', function (float $expected) {
+    /** @var \Pest\Expectation $this */
+    $this->toBeLessThanOrEqual($expected, timing_error($expected, $this->value));
+    return $this;
 });
 
-function format_ms(float $ms)
-{
-    $unit = 'ms';
-    if ($ms > 1000) {
-        $unit = 's';
-        $ms /= 1000;
-    } elseif ($ms < 1) {
-        $unit = 'μs';
-        $ms *= 1000;
-    }
-
-    return round($ms, 3) . $unit;
-}
 
 /*
 |--------------------------------------------------------------------------
@@ -77,7 +45,49 @@ function format_ms(float $ms)
 |
 */
 
-function something()
+/**
+ * @param callable $test
+ * @param positive-int $iterations
+ * @return float
+ */
+function timing_us(callable $test, int $iterations = 1): float
 {
-    // ..
+    $i = $iterations;
+    $total = 0.0;
+
+    while ($i-- > 0) {
+        ob_start();
+        $took = -hrtime(true);
+        $test();
+        $took += hrtime(true);
+        $total += $took / 1e6;
+        ob_end_clean();
+    }
+
+    $avg = $total / $iterations;
+    return $avg * 1000;
+}
+
+function timing_error(float $expectedUs, float $actualUs): string
+{
+    return sprintf(
+        'Took <info>%s</> (<info>%s%%</> more than allowed)',
+        format_us($actualUs),
+        round(($actualUs / $expectedUs - 1) * 100, 2),
+    );
+}
+
+function format_us(float $ms): string
+{
+    $unit = 'μs';
+    if ($ms > 1000) {
+        $unit = 'ms';
+        $ms /= 1000;
+    }
+    if ($ms > 1000) {
+        $unit = 's';
+        $ms /= 1000;
+    }
+
+    return round($ms, 3) . $unit;
 }

@@ -38,9 +38,9 @@ it('handles data and aria', function () {
         ->toBe('<div data-foo="baz" aria-baz="foo"></div>');
 });
 
-it('corrects hyphenated attributes', function () {
+it('allows attributes to be passed by array', function () {
     $x = new \Buttress\PHPX();
-    expect($x->render($x->div(foo_baz: 'bar', http_equiv: 'foo')))
+    expect($x->render($x->div(attributes: ['foo_baz' => 'bar', 'http-equiv' => 'foo'])))
         ->toBe('<div foo_baz="bar" http-equiv="foo"></div>');
 });
 
@@ -74,7 +74,7 @@ it('supports variable capture', function () {
 
 it('handles converting booleans', function () {
     $x = new \Buttress\PHPX();
-    expect($x->render($x->div(test: true)))->toBe('<div test="true"></div>');
+    expect($x->render($x->div(test: true, test2: 'true')))->toBe('<div test="1" test2="true"></div>');
 });
 
 it('includes doctype with html', function () {
@@ -89,8 +89,26 @@ it('outputs', function () {
     expect(ob_get_clean())->toBe('<div></div>');
 });
 
-it('performs well', function () {
+$performanceTest = fn(string $type, string $raw) => function () use ($type, $raw) {
+    $list = range(1, 4);
     $x = new \Buttress\PHPX();
-    expect(fn() => $x->render($x->div(class: 'test', c: 'test')))
-        ->toTakeLessThan(0.05); // 50μs
-});
+
+    $timing = timing_us(fn() => $x->render($x->div(c: [
+        ...$x->if(true, fn() => $x->div(c: 'Conditional')),
+        $x->ul(c: $x->foreach($list, fn($i) => $x->li(c: 'loop #' . $i))),
+        ...$x->with(['foo'], fn($foo) => [
+            $x->span(c: $x->raw($raw)),
+        ]),
+    ])), 1000);
+
+    return [
+        $type . ': '. format_us($timing) => $timing,
+    ];
+};
+
+dataset('BasicPerformance', $performanceTest('Basic', 'foo'));
+dataset('InterpolatedPerformance', $performanceTest('Interpolated', '<foo'));
+
+it('performs well', function ($timing) {
+    expect($timing)->toBeFasterThan(50); // 50μs (microseconds)
+})->with('BasicPerformance', 'InterpolatedPerformance');
