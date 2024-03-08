@@ -1,15 +1,15 @@
 ```mupad
-phpxphpxphpxphpxphpxphpxphpxphpxphpxphpxphpxphpxphpxphpxphpxphpxphpxphpxphpxphpxphpxphpxphpxphpxphpxphpxphpxphpxphpxphpx
-h                                         ________  _______   ________  ________                                       p
-p                                        ╱        ╲╱    ╱  ╲╲╱        ╲╱    ╱   ╲                                      h
-x                                       ╱         ╱        ╱╱         ╱_       _╱                                      p
-p                                      ╱╱      __╱         ╱╱      __╱         ╱                                       x
-h                                      ╲╲_____╱  ╲___╱____╱╲╲_____╱  ╲___╱___╱╱                                        p
-p                                                                                                                      h
-xphpxphpxphpxphpxphpxphpxphpxphpxphpxphpxphpxphpxphpxphpxphpxphpxphpxphpxphpxphpxphpxphpxphpxphpxphpxphpxphpxphpxphpxphp
-```
+-
 
-# Welcome to PHPX
+    ________  _______   ________  ________
+   ╱        ╲╱    ╱  ╲╲╱        ╲╱    ╱   ╲
+  ╱         ╱        ╱╱         ╱_       _╱
+ ╱╱      __╱         ╱╱      __╱         ╱
+ ╲╲_____╱  ╲___╱____╱╲╲_____╱  ╲___╱___╱╱
+
+
+-
+```
 
 PHPX is a fluent DOMDocument wrapper that makes it easy to write safe valid HTML in plain PHP.
 
