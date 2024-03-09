@@ -306,8 +306,8 @@ class PHPX
     }
 
     /**
-     * @param callable(): list<DOMNode> $do
-     * @param null|callable(): list<DOMNode> $else
+     * @param callable(): list<DOMNode>|DOMNode $do
+     * @param null|callable(): list<DOMNode>|DOMNode $else
      * @return list<DOMNode>
      */
     public function if(bool $condition, callable $do, ?callable $else = null): array
