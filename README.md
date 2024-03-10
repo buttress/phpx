@@ -111,6 +111,10 @@ $result = $x->render(
 
 ```
 
+## Related Projects
+- [PHPX Compile](https://github.com/buttress/phpx-compile) An experimental compiler for PHPX. Significantly reduces function calls.
+
+
 ## Contributing
 
 Contributions to PHPX are always welcome! Feel free to fork the repository and submit a pull request.
@@ -129,4 +133,4 @@ git config --local core.hooksPath .githooks
 
 If you encounter any problems or have any questions, please open an issue on GitHub.
 
-Thanks for checkout out PHPX!
+Thanks for checking out PHPX ❤️
