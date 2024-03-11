@@ -113,6 +113,7 @@ $result = $x->render(
 
 ## Related Projects
 - [PHPX Compile](https://github.com/buttress/phpx-compile) An experimental compiler for PHPX. Significantly reduces function calls.
+- [PHPX Templates](https://github.com/buttress/phpx-templates) An experimental template engine built around PHPX and PHPX Compile.
 
 
 ## Contributing
