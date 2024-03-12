@@ -61,7 +61,7 @@ $x->render($x->div(c: [
 $xss = '\'"<>"';
 
 // <span title="'&quot;&lt;&gt;&quot;">'"&lt;&gt;"</span>
-$x->span(title: $xss, c: $xss);
+$x->render($x->span(title: $xss, c: $xss));
 ```
 
 ### Advanced Usage
