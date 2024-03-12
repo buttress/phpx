@@ -1,13 +1,15 @@
 <?php
 
+use Buttress\Phpx\Phpx;
+
 it('renders elements', function () {
-    $x = new \Buttress\PHPX();
+    $x = new Phpx();
     expect($x->render($x->div(class: 'foo', c: $x->i(c: 'test'))))
         ->toBe('<div class="foo"><i>test</i></div>');
 });
 
 it('handles foreach loops', function () {
-    $x = new \Buttress\PHPX();
+    $x = new Phpx();
 
     expect(
         $x->render(
@@ -22,7 +24,7 @@ it('handles foreach loops', function () {
 });
 
 it('handles conditionals', function () {
-    $x = new \Buttress\PHPX();
+    $x = new Phpx();
 
     expect($x->render(
         $x->div(c: [
@@ -33,25 +35,25 @@ it('handles conditionals', function () {
 });
 
 it('handles data and aria', function () {
-    $x = new \Buttress\PHPX();
+    $x = new Phpx();
     expect($x->render($x->div(data: ['foo' => 'baz'], aria: ['baz' => 'foo'])))
         ->toBe('<div data-foo="baz" aria-baz="foo"></div>');
 });
 
 it('allows attributes to be passed by array', function () {
-    $x = new \Buttress\PHPX();
+    $x = new Phpx();
     expect($x->render($x->div(attributes: ['foo_baz' => 'bar', 'http-equiv' => 'foo'])))
         ->toBe('<div foo_baz="bar" http-equiv="foo"></div>');
 });
 
 it('supports vue style attributes', function () {
-    $x = new \Buttress\PHPX();
+    $x = new Phpx();
     expect($x->render($x->div(attributes: ['v-bind:click' => 'foo', 'v-slot:baz' => 'test'])))
         ->toBe('<div v-bind:click="foo" v-slot:baz="test"></div>');
 });
 
 it('supports raw text', function (string $text) {
-    $x = new \Buttress\PHPX();
+    $x = new Phpx();
     expect($x->render($x->div(c: $x->raw($text))))
         ->toBe('<div>' . $text . '</div>');
 })->with([
@@ -61,29 +63,29 @@ it('supports raw text', function (string $text) {
 ]);
 
 it('supports comments', function () {
-    $x = new \Buttress\PHPX();
+    $x = new Phpx();
     expect($x->render($x->div(c: $x->comment('foo'))))
         ->toBe('<div><!--foo--></div>');
 });
 
 it('supports variable capture', function () {
-    $x = new \Buttress\PHPX();
+    $x = new Phpx();
     expect($x->render($x->div(c: $x->with(2 + 3, fn($value) => $x->span(c: "{$value}")))))
         ->toBe('<div><span>5</span></div>');
 });
 
 it('handles converting booleans', function () {
-    $x = new \Buttress\PHPX();
+    $x = new Phpx();
     expect($x->render($x->div(test: true, test2: 'true')))->toBe('<div test="1" test2="true"></div>');
 });
 
 it('includes doctype with html', function () {
-    $x = new \Buttress\PHPX();
+    $x = new Phpx();
     expect($x->render($x->html()))->toBe("<!DOCTYPE html>\n<html></html>\n");
 });
 
 it('outputs', function () {
-    $x = new \Buttress\PHPX();
+    $x = new Phpx();
     ob_start();
     $x->out($x->div());
     expect(ob_get_clean())->toBe('<div></div>');
@@ -91,7 +93,7 @@ it('outputs', function () {
 
 $performanceTest = fn(string $type, string $raw) => function () use ($type, $raw) {
     $list = range(1, 4);
-    $x = new \Buttress\PHPX();
+    $x = new Phpx();
 
     $timing = timing_us(fn() => $x->render($x->div(c: [
         ...$x->if(true, fn() => $x->div(c: 'Conditional')),

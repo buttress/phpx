@@ -1,9 +1,9 @@
 {
     "name": "buttress/phpx",
-    "description": "PHP DOM but fluent",
+    "description": "PHP DOM but intuitive",
     "autoload": {
         "psr-4": {
-            "Buttress\\": "src/"
+            "Buttress\\Phpx\\": "src/"
         }
     },
     "authors": [

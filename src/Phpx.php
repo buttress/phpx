@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Buttress;
+namespace Buttress\Phpx;
 
 use DOMComment;
 use DOMDocument;
@@ -205,7 +205,7 @@ use DOMNode;
  * @method DOMNode wbr(mixed ...$attributes, DOMNode|string|array $c = [])
  * @method DOMNode xmp(mixed ...$attributes, DOMNode|string|array $c = [])
  */
-class PHPX
+class Phpx
 {
     protected array $replace = [];
 

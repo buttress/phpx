@@ -1,17 +1,17 @@
 <p align="center">
     <code lang="html">&lt;PHPX/&gt;</code><br><br>
-    A fluent DOMDocument wrapper that makes it easy to write safe valid HTML in plain PHP.
+    An intuitive DOMDocument wrapper that makes it easy to write safe valid HTML in plain PHP.
 </p>
 
 ---
 
 ```php
-$x = new Buttress\PHPX();
+$x = new Buttress\Phpx\Phpx();
 
 $github = 'https://github.com/buttress/phpx';
 
 $x->out(
-    $x->div(class: 'content', c: [
+    $x->main(class: 'content', c: [
         $x->h1(id: 'title', c: 'Hello World!'),
         $x->p(c: [
             'Brought to you by ',
@@ -37,7 +37,7 @@ becomes
 To install PHPX, use composer:
 
 ```bash
-composer require buttress/phpx
+composer require phpx/phpx
 ```
 
 ## Usage
@@ -53,8 +53,8 @@ $x->render($x->a(href: '#', c: 'Foo'));
 
 // <div><span>Hello</span><strong>world</strong></div>
 $x->render($x->div(c: [
-    $x->span('Hello'),
-    $x->strong('world'),
+    $x->span(c: 'Hello'),
+    $x->strong(c: 'world'),
 ]));
 
 // Context specific XSS protection
@@ -114,7 +114,6 @@ $result = $x->render(
 ## Related Projects
 - [PHPX Compile](https://github.com/buttress/phpx-compile) An experimental compiler for PHPX. Significantly reduces function calls.
 - [PHPX Templates](https://github.com/buttress/phpx-templates) An experimental template engine built around PHPX and PHPX Compile.
-
 
 ## Contributing
 
