@@ -247,7 +247,15 @@ class Phpx
         }
 
         foreach ($args as $key => $val) {
-            $element->setAttribute($key, (string) $val);
+            try {
+                $element->setAttribute($key, (string) $val);
+            } catch (\Throwable $e) {
+                throw new \InvalidArgumentException(sprintf(
+                    "Failed setting attribute \"%s\" against element \"%s\"",
+                    $key,
+                    $method
+                ), 0, $e);
+            }
         }
 
         return $element;
@@ -361,10 +369,5 @@ class Phpx
         }
 
         return $this->handleReplacements($result);
-    }
-
-    public function out(DOMNode ...$nodes): void
-    {
-        echo $this->render(...$nodes);
     }
 }

@@ -84,13 +84,6 @@ it('includes doctype with html', function () {
     expect($x->render($x->html()))->toBe("<!DOCTYPE html>\n<html></html>\n");
 });
 
-it('outputs', function () {
-    $x = new Phpx();
-    ob_start();
-    $x->out($x->div());
-    expect(ob_get_clean())->toBe('<div></div>');
-});
-
 $performanceTest = fn(string $type, string $raw) => function () use ($type, $raw) {
     $list = range(1, 4);
     $x = new Phpx();

@@ -13,7 +13,7 @@ $icon = $x->render($x->svg(xmlns: 'http://www.w3.org/2000/svg', viewBox: '0 0 24
 ]));
 
 // Call methods to create tags
-$x->out($x->html(c: [
+echo $x->render($x->html(c: [
     $x->head(c: [
         $x->meta(charset: 'UTF-8'),
         $x->meta(name: 'viewport', content: 'width=device-width, initial-scale=1.0'),

@@ -10,7 +10,7 @@ $x = new Buttress\Phpx\Phpx();
 
 $github = 'https://github.com/buttress/phpx';
 
-$x->out(
+echo $x->render(
     $x->main(class: 'content', c: [
         $x->h1(id: 'title', c: 'Hello World!'),
         $x->p(c: [
