@@ -109,6 +109,14 @@ $result = $x->render(
     ])
 );
 
+/**
+ * Mix HTML and PHPX
+ */
+?>
+<div class='container'>
+    <?= $x->render($x->h1(c: getProduct()->title)) ?>
+    <span>The best product around</span>
+</div>
 ```
 
 ## Related Projects
